@@ -9,5 +9,11 @@
 
 #include <stdio.h>
 #include <tchar.h>
+#include <iostream>
 
-#include <stdlib.h>
+#include<string>
+#include<Windows.h>
+
+using std::cout;
+using std::cin;
+using std::string;
