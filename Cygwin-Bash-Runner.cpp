@@ -13,16 +13,16 @@ int _tmain(int argc, _TCHAR* argv[])
 	}
 	string scriptTarget(argv[1]);
 
-	string execStr("d:\\cygwin\\bin\\bash --login -c \"cd \"");
+	string execStr("d:\\cygwin\\bin\\bash --login -c \"cd \\\"");
 
 	char cCurrentPath[FILENAME_MAX];
 	if (!GetCurrentDirectory(FILENAME_MAX, cCurrentPath))return errno;
 	
-	execStr += reescape(cCurrentPath);
+	execStr += translated(cCurrentPath);
 
-	execStr += "\";  \"";
+	execStr += "\\\";  \\\"";
 	execStr += translated(scriptTarget);
-	execStr += "\" ";
+	execStr += "\\\" ";
 
 	for(int i = 2; i < argc; i++)
 	{
@@ -45,5 +45,15 @@ const string translated(string scriptPath)
 
 string reescape(string singlyEscaped)
 {
+	//backslash pass
+	unsigned int minimumIndex = 0;
+	while(minimumIndex < singlyEscaped.length())
+	{
+		minimumIndex = singlyEscaped.find('\\', minimumIndex);
+		if(minimumIndex == string::npos)
+			break;
+		singlyEscaped = singlyEscaped.insert(minimumIndex, "\\");
+		minimumIndex+=2;
+	}
 	return singlyEscaped;
 }
