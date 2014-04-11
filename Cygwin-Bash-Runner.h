@@ -2,4 +2,5 @@
 #include "stdafx.h"
 
 int _tmain(int argc, _TCHAR* argv[]);
-const char* translated(string scriptPath);
+const string translated(string scriptPath);
+string reescape(string singlyEscaped);
