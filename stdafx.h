@@ -13,7 +13,9 @@
 
 #include<string>
 #include<Windows.h>
+#include<exception>
 
 using std::cout;
 using std::cin;
 using std::string;
+using std::exception;
