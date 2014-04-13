@@ -27,9 +27,9 @@ namespace Cygwin_Bash_Runner
             var commandargs =" --login -c \"cd \"" + GetOutput(CygpathLocation, Directory.GetCurrentDirectory()) + "\"; '" + cygpathd + "' ";
             for (int i = 1; i < args.Length; i++)
             {
-                commandargs += args[i];
+                commandargs += args[i] + " ";
             }
-
+            commandargs += ";";
             new Process { StartInfo = { FileName = ShellLocation, Arguments = commandargs } }.Start();
         }
 
