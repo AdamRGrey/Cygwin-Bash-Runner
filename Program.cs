@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace Cygwin_Bash_Runner
@@ -23,8 +24,8 @@ namespace Cygwin_Bash_Runner
         static void Main(string[] args)
         {
             var cygpathd = GetOutput(CygpathLocation, args[0]);
-            
-            var commandargs =" --login -c \"cd \"" + GetOutput(CygpathLocation, Directory.GetCurrentDirectory()) + "\"; '" + cygpathd + "' ";
+
+            var commandargs = " --login -c \"cd \\\"" + GetOutput(CygpathLocation, Directory.GetCurrentDirectory()) + "\\\"; '" + cygpathd + "' ";
             for (int i = 1; i < args.Length; i++)
             {
                 commandargs += args[i] + " ";
