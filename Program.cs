@@ -1,22 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Cygwin_Bash_Runner
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
+    // ReSharper disable once InternalMembersMustHaveComments
     class Program
     {
-        public const string CygpathLocation = "D:\\cygwin\\bin\\cygpath.exe";
-        public const string ShellLocation = "D:\\cygwin\\bin\\bash.exe";
+        /// <summary>
+        /// where is cygpath
+        /// </summary>
+        private const string CygpathLocation = "D:\\cygwin\\bin\\cygpath.exe";
+        /// <summary>
+        /// where is the bash
+        /// </summary>
+        private const string ShellLocation = "D:\\cygwin\\bin\\bash.exe";
+
+        /// <summary>
+        /// program entry point
+        /// </summary>
+        /// <param name="args">0 should be the script to run, 1+ will just be passed along</param>
         static void Main(string[] args)
         {
-            var cygpathd = getOutput(CygpathLocation, args[0]);
+            var cygpathd = GetOutput(CygpathLocation, args[0]);
             
-            var commandargs =" --login -c \"cd \"" + getOutput(CygpathLocation, Directory.GetCurrentDirectory()) + "\"; '" + cygpathd + "' ";
+            var commandargs =" --login -c \"cd \"" + GetOutput(CygpathLocation, Directory.GetCurrentDirectory()) + "\"; '" + cygpathd + "' ";
             for (int i = 1; i < args.Length; i++)
             {
                 commandargs += args[i];
@@ -24,7 +32,12 @@ namespace Cygwin_Bash_Runner
 
             new Process { StartInfo = { FileName = ShellLocation, Arguments = commandargs } }.Start();
         }
-        public static string getOutput(string program, string arg)
+
+        /// <summary>
+        /// run <paramref name="program"/> with argument string <paramref name="arg"/>.
+        /// </summary>
+        /// <returns>the output of <paramref name="program"/></returns>
+        public static string GetOutput(string program, string arg)
         {
             var toReturn = "";
             var proc = new Process
@@ -39,8 +52,8 @@ namespace Cygwin_Bash_Runner
                 },
                 EnableRaisingEvents = true
             };
-            proc.ErrorDataReceived += (object sender, DataReceivedEventArgs e) => { toReturn += e.Data + " "; };
-            proc.OutputDataReceived += (object sender, DataReceivedEventArgs e) => { toReturn += e.Data + " "; };
+            proc.ErrorDataReceived += (sender, e) => { toReturn += e.Data + " "; };
+            proc.OutputDataReceived += (sender, e) => { toReturn += e.Data + " "; };
 
             proc.Start();
             proc.BeginOutputReadLine();
@@ -50,4 +63,5 @@ namespace Cygwin_Bash_Runner
             return toReturn.TrimEnd(' ');
         }
     }
+
 }
